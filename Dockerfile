@@ -31,6 +31,7 @@ RUN adduser --system --uid 1001 wechatapp
 COPY --from=builder --chown=wechatapp:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=wechatapp:nodejs /app/server ./server
 COPY --from=builder --chown=wechatapp:nodejs /app/public ./public
+COPY --from=builder --chown=wechatapp:nodejs /app/char.txt ./char.txt
 COPY --from=builder --chown=wechatapp:nodejs /app/package.json ./package.json
 
 USER wechatapp
