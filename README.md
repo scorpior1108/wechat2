@@ -50,16 +50,17 @@ git clone https://github.com/yourusername/wechat-chat-app.git
 cd wechat-chat-app
 ```
 
-2. 创建环境变量文件（可选）：
+2. 创建环境变量文件：
 
 ```bash
 cp .env.example .env
 ```
 
-编辑 `.env` 文件，设置GitHub用户名（用于构建镜像名称）：
+编辑 `.env` 文件，设置必要的环境变量：
 
 ```env
 GITHUB_USERNAME=yourusername
+AI_API_KEY=your_deepseek_api_key
 ```
 
 3. 启动服务：
@@ -88,6 +89,7 @@ docker pull ghcr.io/yourusername/wechat-chat-app:latest
 docker run -d \
   --name wechat-chat-app \
   -p 3333:3333 \
+  -e AI_API_KEY=your_deepseek_api_key \
   ghcr.io/yourusername/wechat-chat-app:latest
 ```
 
@@ -97,18 +99,19 @@ docker run -d \
 |--------|------|--------|
 | `NODE_ENV` | 运行环境 | `production` |
 | `GITHUB_USERNAME` | GitHub用户名（用于构建镜像名称） | `yourusername` |
+| `AI_API_KEY` | DeepSeek API密钥 | 必须设置 |
 
 ## 配置说明
 
 ### AI配置
 
-AI配置信息硬编码在 `server/services/aiService.js` 文件中。如需修改，请直接编辑该文件：
+AI配置支持通过环境变量设置API密钥。在 `server/services/aiService.js` 文件中：
 
 ```javascript
 const AI_CONFIG = {
   provider: {
     name: 'deepseek',
-    apiKey: 'sk-481eb6044ea0411f85843d1ac7ade922',
+    apiKey: process.env.AI_API_KEY || 'sk-481eb6044ea0411f85843d1ac7ade922',
     baseURL: 'https://api.deepseek.com',
     model: 'deepseek-reasoner',
     maxTokens: 2000,
@@ -116,6 +119,8 @@ const AI_CONFIG = {
   }
 };
 ```
+
+如需修改其他配置（如模型名称、基础URL等），请直接编辑该文件。
 
 ### 角色设定
 

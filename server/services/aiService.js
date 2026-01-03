@@ -6,11 +6,11 @@ const path = require('path');
 const aiConfigPath = path.join(__dirname, '../../AI info.txt');
 const charConfigPath = path.join(__dirname, '../../char.txt');
 
-// 直接定义AI配置
+// AI配置，使用环境变量配置API key
 const AI_CONFIG = {
   provider: {
     name: 'deepseek',
-    apiKey: 'sk-481eb6044ea0411f85843d1ac7ade922',
+    apiKey: process.env.AI_API_KEY || 'sk-481eb6044ea0411f85843d1ac7ade922',
     baseURL: 'https://api.deepseek.com',
     model: 'deepseek-reasoner',
     maxTokens: 2000,
